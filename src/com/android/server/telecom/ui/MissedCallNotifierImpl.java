@@ -47,6 +47,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.Settings;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.UserHandle;
@@ -78,6 +80,8 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import slim.provider.SlimSettings;
 
 // TODO: Needed for move to system service: import com.android.internal.R;
 
@@ -129,6 +133,10 @@ public class MissedCallNotifierImpl extends CallsManagerListenerBase implements 
     private static final int CALL_LOG_COLUMN_TYPE = 5;
 
     private static final int MISSED_CALL_NOTIFICATION_ID = 1;
+
+    // notification light default constants
+    public static final int DEFAULT_COLOR = 0xFFFFFF; //White
+    public static final int DEFAULT_TIME = 1000; // 1 second
 
     private final Context mContext;
     private final PhoneAccountRegistrar mPhoneAccountRegistrar;
@@ -370,7 +378,7 @@ public class MissedCallNotifierImpl extends CallsManagerListenerBase implements 
         }
 
         Notification notification = builder.build();
-        configureLedOnNotification(notification);
+        configureLedNotification(mContext, notification);
 
         Log.i(this, "Adding missed call notification for %s.", call);
         long token = Binder.clearCallingIdentity();
@@ -517,11 +525,33 @@ public class MissedCallNotifierImpl extends CallsManagerListenerBase implements 
     }
 
     /**
-     * Configures a notification to emit the blinky notification light.
+     * Configures a Notification to emit the blinky message-waiting/
+     * missed-call signal.
      */
-    private void configureLedOnNotification(Notification notification) {
+    private static void configureLedNotification(Context context, Notification notification) {
+        ContentResolver resolver = context.getContentResolver();
+
+        boolean lightEnabled = SlimSettings.System.getInt(resolver,
+                SlimSettings.System.NOTIFICATION_LIGHT_PULSE, 0) == 1;
+        if (!lightEnabled) {
+            return;
+        }
         notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-        notification.defaults |= Notification.DEFAULT_LIGHTS;
+
+        // Get Missed call and Voice mail values if they are to be used
+        boolean customEnabled = SlimSettings.System.getInt(resolver,
+                SlimSettings.System.NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE, 0) == 1;
+        if (!customEnabled) {
+            notification.defaults |= Notification.DEFAULT_LIGHTS;
+            return;
+        }
+
+        notification.ledARGB = SlimSettings.System.getInt(resolver,
+            SlimSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_COLOR, DEFAULT_COLOR);
+        notification.ledOnMS = SlimSettings.System.getInt(resolver,
+            SlimSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_ON, DEFAULT_TIME);
+        notification.ledOffMS = SlimSettings.System.getInt(resolver,
+            SlimSettings.System.NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF, DEFAULT_TIME);
     }
 
     private boolean canRespondViaSms(Call call) {
