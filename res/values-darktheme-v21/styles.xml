@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SettingsStyle" parent="@style/SettingsTelecommThemeWithoutActionBarOverlay">
+        <item name="android:colorForeground">#ffffffff</item>
+        <item name="android:colorPrimary">#ff111111</item>
+        <item name="android:colorPrimaryDark">#ff000000</item>
+    </style>
+</resources>
