@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="theme_color">#ff111111</color>
+    <color name="theme_color_dark">#ff000000</color>
+    <color name="settings_primary_text_color">#ffffffff</color>
+    <color name="settings_secondary_text_color">#ffbbbbbb</color>
+    <color name="setting_background_color">#ff000000</color>
+    <color name="actionbar_icon_color">#ffffffff</color>
+    <color name="actionbar_text_color">#ffffffff</color>
+    <color name="actionbar_background_color">#ff111111</color>
+</resources>
