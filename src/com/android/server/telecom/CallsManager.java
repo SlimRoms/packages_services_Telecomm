@@ -780,6 +780,9 @@ public class CallsManager extends Call.ListenerBase implements VideoProviderProx
             call.setTargetPhoneAccount(null);
         }
 
+        final boolean requireCallCapableAccountByHandle = mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_requireCallCapableAccountForHandle);
+
         if (call.getTargetPhoneAccount() != null || call.isEmergencyCall()) {
             if (!call.isEmergencyCall()) {
                 updateLchStatus(call.getTargetPhoneAccount().getId());
@@ -787,7 +790,9 @@ public class CallsManager extends Call.ListenerBase implements VideoProviderProx
             // If the account has been set, proceed to place the outgoing call.
             // Otherwise the connection will be initiated when the account is set by the user.
             call.startCreateConnection(mPhoneAccountRegistrar);
-        } else if (mPhoneAccountRegistrar.getCallCapablePhoneAccounts(null, false).isEmpty()) {
+        } else if (mPhoneAccountRegistrar.getCallCapablePhoneAccounts(
+                requireCallCapableAccountByHandle ? call.getHandle().getScheme() : null, false)
+                .isEmpty()) {
             // If there are no call capable accounts, disconnect the call.
             markCallAsDisconnected(call, new DisconnectCause(DisconnectCause.CANCELED,
                     "No registered PhoneAccounts"));
