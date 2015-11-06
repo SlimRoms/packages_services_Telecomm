@@ -775,6 +775,12 @@ public class CallsManager extends Call.ListenerBase implements VideoProviderProx
                 || mDockManager.isDocked());
         call.setVideoState(videoState);
 
+        final boolean useSpeakerWhenDocked = mContext.getResources().getBoolean(
+                R.bool.use_speaker_when_docked);
+
+        call.setStartWithSpeakerphoneOn(speakerphoneOn
+                || (useSpeakerWhenDocked && mDockManager.isDocked()));
+
         if (call.isEmergencyCall()) {
             // Emergency -- CreateConnectionProcessor will choose accounts automatically
             call.setTargetPhoneAccount(null);
