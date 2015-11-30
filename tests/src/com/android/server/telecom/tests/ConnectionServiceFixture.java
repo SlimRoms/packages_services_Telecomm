@@ -177,6 +177,7 @@ public class ConnectionServiceFixture implements TestFixture<IConnectionService>
         int state;
         int addressPresentation;
         int capabilities;
+        int supportedAudioRoutes;
         StatusHints statusHints;
         DisconnectCause disconnectCause;
         String conferenceId;
@@ -401,6 +402,7 @@ public class ConnectionServiceFixture implements TestFixture<IConnectionService>
                 c.request.getAccountHandle(),
                 c.state,
                 c.capabilities,
+                c.supportedAudioRoutes,
                 c.request.getAddress(),
                 c.addressPresentation,
                 c.callerDisplayName,
