@@ -16,9 +16,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Blacklist preferences -->
   <string name="blacklist_title">Черный список</string>
   <string name="blacklist_summary_disabled">Отключено</string>
   <string name="blacklist_summary">Входящие звонки с номеров, находящихся в черном списке, будут блокироваться</string>
+  <!-- Blacklist notifications -->
   <string name="blacklist_call_notification">Заблокирован вызов от %s</string>
   <string name="blacklist_call_notification_private_number">Заблокирован вызов со скрытого номера</string>
   <string name="blacklist_call_notification_unknown_number">Заблокирован вызов с неизвестного номера %s</string>

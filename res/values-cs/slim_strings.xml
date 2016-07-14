@@ -16,9 +16,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Blacklist preferences -->
   <string name="blacklist_title">Seznam zakázaných</string>
   <string name="blacklist_summary_disabled">Vypnuto</string>
   <string name="blacklist_summary">Příchozí hovory z čísel, která jsou na černé listině, jsou automaticky blokována</string>
+  <!-- Blacklist notifications -->
   <string name="blacklist_call_notification">Zablokován hovor od %s</string>
   <string name="blacklist_call_notification_private_number">Zablokován hovor ze skrytého čísla</string>
   <string name="blacklist_call_notification_unknown_number">Zablokován hovor z neznámého čísla %s</string>
